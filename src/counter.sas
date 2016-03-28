@@ -1,15 +1,15 @@
 /************************************************************************/
-/*																		*/
-/* Name: Counter.sas 													*/
-/*  																	*/
-/* Author: Chris Brooks, Copyright 2015									*/
-/*  																	*/
-/* Purpose: To facilitate the creation and use of counter variables 	*/
-/*																		*/
-/* Notes: Before compilation decalre a libaray called bin to hold the	*/
-/* 		  Compioled package and set the macro variable overwite_mode	*/
-/*        To yes 														*/
-/*																		*/
+/*																		
+/* Name: Counter.sas 													
+/*  																	
+/* Author: Chris Brooks, Copyright 2015									
+/*  																	
+/* Purpose: To facilitate the creation and use of counter variables 	
+/*																		
+/* Notes: Before compilation decalre a libaray called bin to hold the	
+/* 		  Compiled package and set the macro variable overwite_mode	
+/*        To yes 														
+/*																		
 /************************************************************************/
 
 proc ds2;
