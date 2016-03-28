@@ -24,10 +24,24 @@ package intRange /overwrite=yes;
 		if test_end >= test_start then return 1;
 		else return 0;
 	end;
+	
+	method max() returns int;
+		return upperBound;	
+	end;
+	
+	method min() returns int;
+		return lowerbound;
+	end;
+
 /* Tests if a single value is inside the range	 */
 
 	method inRange(int testval) returns int;
-		if lowerBound <= testval <= upperBound then return 1;
+		if min() <= testval <= max() then return 1;
+		else return 0;
+	end;
+	
+	method isequal(int test_start, int test_end) returns int;
+		if test_start=min() and test_end=max() then return 1;
 		else return 0;
 	end;
 
@@ -45,9 +59,10 @@ package intRange /overwrite=yes;
 
 	method isInsideRange(int test_start, int test_end) returns int;
 		if isvalid(test_start, test_end) then do;
-			return 1;
+			if (test_start<=min()) and (test_end >= max()) then return 1;
+			else return 0;
 		end;
-		return 1;
+		else return 0;
 	
 	end;
 run;
@@ -61,9 +76,11 @@ proc ds2;
 	
 		method run();		
 			dcl package intrange years(2000,2005);
-			if years.inrange(2004) then put 'right';
+			if years.inrange(2005) then put 'right';
 			else put 'wrong';
-			if years.containsrange(2001,2002) then put 'OK';
+			if years.containsrange(2000,2005) then put 'OK';
+			else put 'outside';
+			if years.isinsiderange(2001,2010) then put 'inside';
 			else put 'outside';
 		end;
 	enddata;
