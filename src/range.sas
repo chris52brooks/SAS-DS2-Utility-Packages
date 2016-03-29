@@ -3,6 +3,7 @@ package intRange /overwrite=yes;
 	dcl int lowerBound;
 	dcl int upperBound;
 	forward isvalid;
+	forward reset;
 	
 	method intrange();
 		lowerBound=0;
@@ -10,14 +11,7 @@ package intRange /overwrite=yes;
 	end;
 	
 	method intrange(int new_start, int new_end);
-		if isvalid(new_start, new_end) then do;
-			lowerBound=new_start;
-			upperBound=new_end;
-		end;
-		else do;
-			put 'ERROR: end point of range must not be less than start point';
-			stop;
-		end;
+		reset(new_start,new_end);
 	end;
 
 	method isValid(int test_start, int test_end) returns int;
@@ -31,6 +25,22 @@ package intRange /overwrite=yes;
 	
 	method min() returns int;
 		return lowerbound;
+	end;
+	
+	method reset();
+		upperBound=0;
+		lowerBound=0;
+	end;
+	
+	method reset(int new_start, int new_end);
+		if isvalid(new_start, new_end) then do;
+			lowerBound=new_start;
+			upperBound=new_end;
+		end;
+		else do;
+			put 'ERROR: end point of range must not be less than start point';
+			stop;
+		end;
 	end;
 
 /* Tests if a single value is inside the range	 */
@@ -65,6 +75,19 @@ package intRange /overwrite=yes;
 		else return 0;
 	
 	end;
+	
+	method overlap(int test_start, int test_end) returns int;
+		if isvalid(test_start, test_end) then do;
+			if (inrange(test_start) or inrange(test_end)) or  	
+	end;
+	
+	method coalesce(int test_start, int test_end);
+		if isvalid(test_start, test_end) then do;
+			if test_start<min() then reset(test_start, max());
+			if test_end>max() then reset(min(), test_end);
+		end;
+	
+	end;
 run;
 quit;
 
@@ -76,12 +99,24 @@ proc ds2;
 	
 		method run();		
 			dcl package intrange years(2000,2005);
+			dcl int rc1;
+			dcl int rc2;
 			if years.inrange(2005) then put 'right';
 			else put 'wrong';
 			if years.containsrange(2000,2005) then put 'OK';
 			else put 'outside';
 			if years.isinsiderange(2001,2010) then put 'inside';
 			else put 'outside';
+			years.reset(2001,2006);
+			if years.inrange(2006) then put 'right';
+			else put 'wrong';
+			years.coalesce(1800,2004);
+			rc1=years.min();
+			rc2=years.max();
+			put rc1=;
+			put rc2=;
+			
+			
 		end;
 	enddata;
 	
