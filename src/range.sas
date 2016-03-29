@@ -2,12 +2,14 @@ proc ds2;
 package intRange /overwrite=yes;
 	dcl int lowerBound;
 	dcl int upperBound;
+	dcl int pointer;
 	forward isvalid;
 	forward reset;
 	
 	method intrange();
 		lowerBound=0;
-		upperBound=0;	
+		upperBound=0;
+		pointer=0;	
 	end;
 	
 	method intrange(int new_start, int new_end);
@@ -36,6 +38,7 @@ package intRange /overwrite=yes;
 		if isvalid(new_start, new_end) then do;
 			lowerBound=new_start;
 			upperBound=new_end;
+			pointer=new_start;
 		end;
 		else do;
 			put 'ERROR: end point of range must not be less than start point';
@@ -72,22 +75,18 @@ package intRange /overwrite=yes;
 			if (test_start<=min()) and (test_end >= max()) then return 1;
 			else return 0;
 		end;
-		else return 0;
-	
+		else return 0;	
 	end;
 	
-	method overlap(int test_start, int test_end) returns int;
-		if isvalid(test_start, test_end) then do;
-			if (inrange(test_start) or inrange(test_end)) or  	
+	method foreach() returns int;
+		if pointer<=max() then pointer=pointer+1;
+		return pointer-1;
 	end;
 	
-	method coalesce(int test_start, int test_end);
-		if isvalid(test_start, test_end) then do;
-			if test_start<min() then reset(test_start, max());
-			if test_end>max() then reset(min(), test_end);
-		end;
-	
+	method reset_pointer(int new_pointer);
+		if inrange(new_pointer) then pointer=new_pointer;
 	end;
+	
 run;
 quit;
 
@@ -110,11 +109,17 @@ proc ds2;
 			years.reset(2001,2006);
 			if years.inrange(2006) then put 'right';
 			else put 'wrong';
-			years.coalesce(1800,2004);
-			rc1=years.min();
-			rc2=years.max();
-			put rc1=;
-			put rc2=;
+			
+			do i = years.min() to years.max();
+				rc1=years.foreach();
+				put rc1=;
+			
+			end;
+/* 			years.coalesce(1800,2004); */
+/* 			rc1=years.min(); */
+/* 			rc2=years.max(); */
+/* 			put rc1=; */
+/* 			put rc2=; */
 			
 			
 		end;
