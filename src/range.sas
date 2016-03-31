@@ -78,6 +78,14 @@ package intRange /overwrite=yes;
 		else return 0;	
 	end;
 	
+	method overlaps(int test_start, int test_end) returns int;
+		if isvalid(test_start, test_end) then do;
+			if (containsrange(test_start, test_end)) or (isinsiderange(test_start, test_end)) or (inrange(test_start)) or (inrange(test_end))
+				then return 1;
+			else return 0;
+		end;
+	end;
+	
 	method foreach() returns int;
 		if pointer<=max() then pointer=pointer+1;
 		return pointer-1;
@@ -109,6 +117,8 @@ proc ds2;
 			years.reset(2001,2006);
 			if years.inrange(2006) then put 'right';
 			else put 'wrong';
+			if years.overlaps(1998,1999) then put 'overlaps';
+			else put 'does not overlap';
 			
 			do i = years.min() to years.max();
 				rc1=years.foreach();
