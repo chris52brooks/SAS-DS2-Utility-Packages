@@ -1,3 +1,5 @@
+
+
 proc ds2;
 package intRange /overwrite=yes;
 	dcl int lowerBound;
@@ -46,7 +48,7 @@ package intRange /overwrite=yes;
 		end;
 	end;
 
-/* Tests if a single value is inside the range	 */
+/* Tests if a single value is inside the range	*/
 
 	method inRange(int testval) returns int;
 		if min() <= testval <= max() then return 1;
